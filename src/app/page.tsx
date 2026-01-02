@@ -395,7 +395,7 @@ export default function Home() {
             {/* BlackHat MEA */}
             <div className="border-l-2 border-black pl-4 sm:pl-6 md:pl-8 pb-8 sm:pb-12 animate-fade-in-left delay-100 hover-lift">
               <div className="mb-4 sm:mb-6">
-                <h3 className="text-xl sm:text-2xl font-bold mb-2">BlackHat MEA 2024</h3>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">BlackHat MEA 2025</h3>
                 <p className="text-base sm:text-lg opacity-80 mb-1">Riyadh, Saudi Arabia</p>
                 <p className="text-xs sm:text-sm opacity-60">Conference Participant & CTF Competitor</p>
               </div>

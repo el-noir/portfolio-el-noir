@@ -77,7 +77,7 @@ export default function Highlights() {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
                   <div className="flex items-start justify-between gap-4 relative z-10">
                     <div>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-fade-in">BlackHat MEA 2024</h2>
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-fade-in">BlackHat MEA 2025</h2>
                       <p className="text-lg sm:text-xl opacity-90 mb-1 animate-fade-in">Riyadh, Saudi Arabia</p>
                       <p className="text-sm sm:text-base opacity-80 animate-fade-in">Conference Participant & CTF Competitor</p>
                     </div>
