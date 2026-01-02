@@ -43,6 +43,9 @@ jobs:
         run: |
           mkdir -p ./out
           touch ./out/.nojekyll
+      
+      - name: Add CNAME for custom domain
+        run: echo "mudasirshah.live" > ./out/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
