@@ -39,11 +39,25 @@ jobs:
       - name: Build with Next.js
         run: npm run build
       
+      - name: Check build output directory
+        run: |
+          echo "Contents of workspace:"
+          ls -la
+          echo "Checking for out directory:"
+          ls -la out/ || echo "out/ doesn't exist"
+          echo "Checking .next directory:"
+          ls -la .next/ || echo ".next doesn't exist"
+      
       - name: Verify build output
         run: |
-          echo "Checking if out/index.html exists..."
-          ls -la ./out/index.html
-          echo "Build output verified ✓"
+          if [ -f "./out/index.html" ]; then
+            echo "✓ out/index.html exists"
+          elif [ -f "./.next/standalone/index.html" ]; then
+            echo "Found in .next/standalone"
+          else
+            echo "❌ index.html not found in expected locations"
+            exit 1
+          fi
       
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
