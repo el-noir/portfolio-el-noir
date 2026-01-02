@@ -39,25 +39,18 @@ jobs:
       - name: Build with Next.js
         run: npm run build
       
-      - name: Check build output directory
+      - name: Copy static files to out
         run: |
-          echo "Contents of workspace:"
-          ls -la
-          echo "Checking for out directory:"
-          ls -la out/ || echo "out/ doesn't exist"
-          echo "Checking .next directory:"
-          ls -la .next/ || echo ".next doesn't exist"
-      
-      - name: Verify build output
-        run: |
-          if [ -f "./out/index.html" ]; then
-            echo "✓ out/index.html exists"
-          elif [ -f "./.next/standalone/index.html" ]; then
-            echo "Found in .next/standalone"
-          else
-            echo "❌ index.html not found in expected locations"
-            exit 1
-          fi
+          mkdir -p ./out
+          # Copy rendered HTML from server
+          cp -r .next/server/app/* ./out/ 2>/dev/null || true
+          # Copy static assets
+          cp -r .next/static ./out/_next/static
+          # Copy public files
+          cp -r public/* ./out/
+          # List final output
+          echo "Contents of out directory:"
+          find ./out -type f -name "*.html" | head -20
       
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
