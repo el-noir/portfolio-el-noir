@@ -207,7 +207,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm opacity-60 mb-1">Phone</p>
-                  <p className="text-sm sm:text-base font-medium">+92 339 0081 0055</p>
+                  <p className="text-sm sm:text-base font-medium">+92 339 0081055</p>
                 </div>
               </div>
             </div>
