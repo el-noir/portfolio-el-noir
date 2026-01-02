@@ -39,13 +39,24 @@ jobs:
       - name: Build with Next.js
         run: npm run build
       
-      - name: Add .nojekyll file
+      - name: Verify build output
         run: |
-          mkdir -p ./out
-          touch ./out/.nojekyll
+          echo "Checking if out/index.html exists..."
+          ls -la ./out/index.html
+          echo "Build output verified ✓"
+      
+      - name: Add .nojekyll file
+        run: touch ./out/.nojekyll
       
       - name: Add CNAME for custom domain
         run: echo "mudasirshah.live" > ./out/CNAME
+      
+      - name: Verify deployment files
+        run: |
+          echo "Files in out directory:"
+          ls -la ./out/
+          echo "CNAME content:"
+          cat ./out/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
