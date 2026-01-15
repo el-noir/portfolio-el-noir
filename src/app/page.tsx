@@ -196,21 +196,8 @@ export default function Home() {
               <p className="text-base sm:text-lg opacity-80 leading-relaxed">
                 I specialize in API design, database architecture, AI agent workflows, and secure, maintainable code, with a proven track record of delivering robust, high-performance applications from concept to deployment.
               </p>
-              <div className="space-y-3 sm:space-y-4">
-                <div>
-                  <p className="text-xs sm:text-sm opacity-60 mb-1">Location</p>
-                  <p className="text-sm sm:text-base font-medium">Emaralds Height C01, Islamabad</p>
-                </div>
-                <div>
-                  <p className="text-xs sm:text-sm opacity-60 mb-1">Email</p>
-                  <p className="text-sm sm:text-base font-medium break-all">mudasirshah9777@gmail.com</p>
-                </div>
-                <div>
-                  <p className="text-xs sm:text-sm opacity-60 mb-1">Phone</p>
-                  <p className="text-sm sm:text-base font-medium">+92 339 0081055</p>
-                </div>
-              </div>
             </div>
+
             <div className="animate-fade-in-right delay-200">
               <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Technical Skills</h3>
               <div className="space-y-4 sm:space-y-6">
@@ -472,37 +459,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Education Section */}
-      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 border-t border-black/10">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8 md:mb-10 animate-fade-in-up">Education</h2>
-          <div className="space-y-6 sm:space-y-8">
-            <div className="border-l-2 border-black pl-4 sm:pl-6 md:pl-8 animate-fade-in-left delay-100 hover-lift">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 sm:gap-4 mb-3 sm:mb-4">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold">Bachelor's of Science in Computer Science</h3>
-                  <p className="text-base sm:text-lg opacity-80">Air University Islamabad</p>
-                </div>
-                <p className="text-xs sm:text-sm opacity-60">Sep 2023 - Present</p>
-              </div>
-              <p className="opacity-80 text-sm sm:text-base">Specializing in Web Development and Backend Technologies</p>
-            </div>
-
-            <div className="border-l-2 border-black pl-4 sm:pl-6 md:pl-8 animate-fade-in-left delay-200 hover-lift">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 sm:gap-4 mb-3 sm:mb-4">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold">Intermediate in Computer Science</h3>
-                  <p className="text-base sm:text-lg opacity-80">Govt Degree College Mingora Swat</p>
-                </div>
-                <p className="text-xs sm:text-sm opacity-60">Aug 2021 - Aug 2023</p>
-              </div>
-              <p className="opacity-80 text-sm sm:text-base">Studied Programming in C++</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Contact Section */}
       <section id="contact" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 border-t border-black/10">
         <div className="max-w-7xl mx-auto text-center">
