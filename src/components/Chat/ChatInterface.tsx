@@ -2,86 +2,140 @@
 
 import { useState } from "react";
 
+interface Trace {
+    intent_detected: string;
+    tool_selected: string;
+    tool_args: any;
+    tool_latency_ms: number;
+    total_latency_ms: number;
+}
+
+interface Message {
+    role: "user" | "ai";
+    content: string;
+    trace?: Trace;
+}
+
 export default function ChatInterface() {
-  const [messages, setMessages] = useState<{ role: "user" | "ai"; content: string }[]>([
-    { role: "ai", content: "Hi! I'm Mudasir's AI agent. Ask me about his experience, projects, or availability." }
-  ]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+    const [messages, setMessages] = useState<Message[]>([
+        { role: "ai", content: "Hi! I'm Mudasir's AI agent. Ask me about his experience, projects, or availability." }
+    ]);
+    const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [showTrace, setShowTrace] = useState(false);
 
-  const sendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+    const sendMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim()) return;
 
-    const userMessage = input;
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-    setInput("");
-    setIsLoading(true);
+        const userMessage = input;
+        setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+        setInput("");
+        setIsLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:8000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
-      });
+        try {
+            const response = await fetch("http://localhost:8000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage }),
+            });
 
-      if (!response.ok) throw new Error("Failed to fetch");
-      
-      const data = await response.json();
-      
-      setMessages((prev) => [...prev, { role: "ai", content: data.response }]);
-    } catch (error) {
-      console.error(error);
-      setMessages((prev) => [...prev, { role: "ai", content: "Sorry, I am having trouble connecting to the AI service right now." }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            if (!response.ok) throw new Error("Failed to fetch");
 
-  return (
-    <div className="fixed bottom-4 right-4 w-96 max-w-[calc(100vw-2rem)] bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
-      <div className="bg-zinc-800 p-4 border-b border-zinc-700 font-semibold text-zinc-100 flex justify-between items-center">
-        <span>Portfolio AI</span>
-        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">Online</span>
-      </div>
-      
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-              msg.role === "user" 
-                ? "bg-blue-600 text-white rounded-br-none" 
-                : "bg-zinc-800 text-zinc-200 rounded-bl-none"
-            }`}>
-              {msg.content}
+            const data = await response.json();
+
+            setMessages((prev) => [...prev, {
+                role: "ai",
+                content: data.response,
+                trace: data.trace
+            }]);
+        } catch (error: any) {
+            console.error(error);
+            setMessages((prev) => [...prev, { role: "ai", content: `Error: ${error.message}. Is the backend running?` }]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="fixed bottom-4 right-4 w-[450px] max-w-[calc(100vw-2rem)] bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[600px] transition-all duration-300">
+            <div className="bg-zinc-800 p-4 border-b border-zinc-700 font-semibold text-zinc-100 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                    <span>Portfolio AI</span>
+                    <span className="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full uppercase tracking-tighter">Structured Tools</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setShowTrace(!showTrace)}
+                        className={`text-[10px] px-2 py-1 rounded border transition-colors ${showTrace ? 'bg-zinc-100 text-zinc-900 border-zinc-100' : 'text-zinc-400 border-zinc-600 hover:text-zinc-200'}`}
+                    >
+                        {showTrace ? "Hide Trace" : "Show Trace"}
+                    </button>
+                    <span className="text-[10px] text-green-400">● Online</span>
+                </div>
             </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-zinc-800 text-zinc-400 max-w-[80%] rounded-2xl rounded-bl-none px-4 py-2 animate-pulse">
-              Thinking...
-            </div>
-          </div>
-        )}
-      </div>
 
-      <form onSubmit={sendMessage} className="p-3 bg-zinc-800 border-t border-zinc-700 flex gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask me anything..."
-          className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button 
-          type="submit" 
-          disabled={isLoading || !input.trim()}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Send
-        </button>
-      </form>
-    </div>
-  );
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans">
+                {messages.map((msg, i) => (
+                    <div key={i} className="space-y-2">
+                        <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                            <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.role === "user"
+                                    ? "bg-blue-600 text-white rounded-br-none"
+                                    : "bg-zinc-800 text-zinc-200 rounded-bl-none"
+                                }`}>
+                                {msg.content}
+                            </div>
+                        </div>
+
+                        {showTrace && msg.trace && (
+                            <div className="mx-2 p-3 bg-zinc-950 border border-zinc-800 rounded-lg font-mono text-[10px] text-zinc-500 space-y-1">
+                                <div className="flex justify-between">
+                                    <span className="text-blue-400">Intent:</span>
+                                    <span>{msg.trace.intent_detected}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-purple-400">Tool:</span>
+                                    <span>{msg.trace.tool_selected}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-green-400">Latency:</span>
+                                    <span>{msg.trace.total_latency_ms}ms</span>
+                                </div>
+                                <div className="pt-1 mt-1 border-t border-zinc-800">
+                                    <span className="text-zinc-400 block mb-1">Args:</span>
+                                    <pre className="text-zinc-300 overflow-x-auto">
+                                        {JSON.stringify(msg.trace.tool_args, null, 2)}
+                                    </pre>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                ))}
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-zinc-800 text-zinc-400 max-w-[80%] rounded-2xl rounded-bl-none px-4 py-2 animate-pulse text-sm">
+                            Analyzing query...
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            <form onSubmit={sendMessage} className="p-3 bg-zinc-800 border-t border-zinc-700 flex gap-2">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="e.g. 'Show me your React projects' or 'How do I hire you?'"
+                    className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                    type="submit"
+                    disabled={isLoading || !input.trim()}
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    );
 }
