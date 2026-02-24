@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Trace {
     intent_detected: string;
@@ -26,6 +28,11 @@ export default function ChatInterface() {
     const [showTrace, setShowTrace] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
+    // Generate a unique session ID once per page load
+    const [sessionId] = useState(() =>
+        typeof window !== 'undefined' ? crypto.randomUUID?.() || Math.random().toString(36).substring(2) : "default"
+    );
+
     const sendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim()) return;
@@ -39,7 +46,10 @@ export default function ChatInterface() {
             const response = await fetch("http://localhost:8000/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMessage }),
+                body: JSON.stringify({
+                    message: userMessage,
+                    session_id: sessionId
+                }),
             });
 
             if (!response.ok) throw new Error("Failed to fetch");
@@ -74,8 +84,8 @@ export default function ChatInterface() {
             <div className={`fixed bottom-4 right-4 z-50 w-[450px] max-w-[calc(100vw-2rem)] bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[600px] max-h-[calc(100vh-2rem)] transition-all duration-300 origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-50 opacity-0 pointer-events-none'}`}>
                 <div className="bg-zinc-800 p-4 border-b border-zinc-700 font-semibold text-zinc-100 flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                        <span>Portfolio AI</span>
-                        <span className="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full uppercase tracking-tighter">Structured Tools</span>
+                        <span>Noir AI</span>
+                        <span className="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full uppercase tracking-tighter">Testing Mode</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <button
@@ -99,11 +109,44 @@ export default function ChatInterface() {
                     {messages.map((msg, i) => (
                         <div key={i} className="space-y-2">
                             <div className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                                <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${msg.role === "user"
+                                <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === "user"
                                     ? "bg-blue-600 text-white rounded-br-none"
                                     : "bg-zinc-800 text-zinc-200 rounded-bl-none"
                                     }`}>
-                                    {msg.content}
+                                    {msg.role === "user" ? (
+                                        msg.content
+                                    ) : (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                p: ({ node, ...props }) => <p className="mb-2 last:mb-0 leading-relaxed" {...props} />,
+                                                a: ({ node, ...props }) => <a className="text-blue-400 hover:text-blue-300 underline font-medium" target="_blank" rel="noopener noreferrer" {...props} />,
+                                                ul: ({ node, ...props }) => <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />,
+                                                ol: ({ node, ...props }) => <ol className="list-decimal pl-5 mb-2 space-y-1" {...props} />,
+                                                li: ({ node, ...props }) => <li className="pl-1" {...props} />,
+                                                h1: ({ node, ...props }) => <h1 className="text-lg font-bold mb-2 mt-3" {...props} />,
+                                                h2: ({ node, ...props }) => <h2 className="text-base font-bold mb-2 mt-3" {...props} />,
+                                                h3: ({ node, ...props }) => <h3 className="text-sm font-bold mb-2 mt-2" {...props} />,
+                                                strong: ({ node, ...props }) => <strong className="font-semibold text-zinc-100" {...props} />,
+                                                code: ({ className, children, ...props }: any) => {
+                                                    const match = /language-(\w+)/.exec(className || "");
+                                                    return !match ? (
+                                                        <code className="bg-black/20 px-1.5 py-0.5 rounded text-[0.9em] font-mono" {...props}>
+                                                            {children}
+                                                        </code>
+                                                    ) : (
+                                                        <pre className="bg-black/30 p-3 rounded-lg overflow-x-auto text-[0.85em] mb-2 font-mono">
+                                                            <code className={className} {...props}>
+                                                                {children}
+                                                            </code>
+                                                        </pre>
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            {msg.content}
+                                        </ReactMarkdown>
+                                    )}
                                 </div>
                             </div>
 
