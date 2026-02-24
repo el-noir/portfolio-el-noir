@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -21,13 +21,24 @@ interface Message {
 
 export default function ChatInterface() {
     const [messages, setMessages] = useState<Message[]>([
-        { role: "ai", content: "Hi! I'm Mudasir's AI agent. Ask me about his experience, projects, or availability." }
+        { role: "ai", content: "Noir AI: A premium personal concierge and intelligent assistant dedicated to showcasing Mudasir Shah's portfolio and orchestrating seamless professional connections. How may I assist you today?" }
     ]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [loadingText, setLoadingText] = useState("Thinking...");
     const [showTrace, setShowTrace] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [showGreeting, setShowGreeting] = useState(false);
+
+    // Fade in the greeting bubble after 3 seconds
+    useEffect(() => {
+        if (!isOpen) {
+            const timer = setTimeout(() => {
+                setShowGreeting(true);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen]);
 
     // Generate a unique session ID once per page load
     const [sessionId] = useState(() =>
@@ -82,13 +93,49 @@ export default function ChatInterface() {
 
     return (
         <>
+            {/* Proactive Greeting Bubble */}
+            {!isOpen && showGreeting && (
+                <div className="fixed bottom-24 right-6 z-40 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 w-72 relative animate-bounce-subtle">
+                        <button
+                            onClick={() => setShowGreeting(false)}
+                            className="absolute -top-2 -right-2 bg-white border border-gray-100 shadow-md rounded-full p-1 text-gray-400 hover:text-black transition-colors"
+                        >
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                        <div className="flex items-start gap-3">
+                            <div className="bg-black text-white rounded-full p-2 h-8 w-8 flex items-center justify-center text-xs shrink-0">
+                                🤖
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs font-bold text-black uppercase tracking-widest">Noir AI</p>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    Hi! I can showcase Mudasir's work or schedule a meeting for you. 👋
+                                </p>
+                            </div>
+                        </div>
+                        <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45"></div>
+                    </div>
+                </div>
+            )}
+
             {/* Floating Action Button */}
             <button
-                onClick={() => setIsOpen(true)}
-                className={`fixed bottom-6 right-6 z-40 bg-black border border-gray-200 text-white rounded-full p-4 shadow-2xl hover:bg-gray-800 transition-all duration-300 hover:scale-110 flex items-center justify-center font-bold ${isOpen ? 'opacity-0 pointer-events-none scale-50' : 'opacity-100 scale-100'}`}
+                onClick={() => {
+                    setIsOpen(true);
+                    setShowGreeting(false);
+                }}
+                className={`fixed bottom-6 right-6 z-40 bg-black border border-gray-200 text-white rounded-full p-4 shadow-2xl hover:bg-gray-800 transition-all duration-500 hover:scale-110 flex items-center justify-center font-bold overflow-hidden ${isOpen ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
             >
-                <span className="text-2xl leading-none sm:mr-2">💬</span>
-                <span className="hidden sm:inline">Ask AI</span>
+                {/* Pulse Effect */}
+                {!isOpen && (
+                    <span className="absolute inset-0 rounded-full animate-ping-slow bg-white/20"></span>
+                )}
+
+                <div className="relative flex items-center">
+                    <span className="text-2xl leading-none sm:mr-2">💬</span>
+                    <span className="hidden sm:inline">Chat with Noir AI</span>
+                </div>
             </button>
 
             {/* Chat Window */}

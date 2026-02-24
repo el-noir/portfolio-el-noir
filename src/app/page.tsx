@@ -92,7 +92,7 @@ export default function Home() {
           >
             <div className="text-center space-y-6">
               <div className="animate-bounce">
-                <span className="text-6xl">🚀</span>
+
               </div>
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">

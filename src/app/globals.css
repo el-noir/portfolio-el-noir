@@ -43,3 +43,29 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
+
+@layer utilities {
+  @keyframes ping-slow {
+    75%, 100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  .animate-ping-slow {
+    animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 4s ease-in-out infinite;
+  }
+}
