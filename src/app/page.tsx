@@ -145,7 +145,7 @@ export default function Home() {
               <div className="flex justify-center mb-8 animate-scale-in">
                 <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 hover-lift">
                   <Image
-                    src="/profile-mudasir.png"
+                    src="/"
                     alt="Mudasir Shah"
                     fill
                     className="rounded-full object-cover border-4 border-black"
