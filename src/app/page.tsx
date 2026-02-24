@@ -155,13 +155,13 @@ export default function Home() {
               </div>
               <div className="space-y-2 animate-fade-in-up delay-100">
                 <p className="text-sm uppercase tracking-widest opacity-60">Software Engineer & AI Solutions Expert</p>
-                <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+                <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
                   I Build Systems That <br className="hidden md:block" /> Scale Your Business
-                </h1>
+                </h2>
               </div>
-              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl opacity-80 leading-relaxed animate-fade-in-up delay-200">
+              <h1 className="text-lg sm:text-xl md:text-2xl max-w-3xl opacity-80 leading-relaxed animate-fade-in-up delay-200">
                 Hi, I'm Mudasir Shah. I turn complex problems into elegant, production-ready SaaS products and AI-powered workflows.
-              </p>
+              </h1>
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4 animate-fade-in-up delay-300">
                 <a
                   href="#contact"
