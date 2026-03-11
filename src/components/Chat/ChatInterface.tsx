@@ -154,7 +154,7 @@ export default function ChatInterface() {
         setLoadingText("Transcribingâ€¦");
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/voice`, { method: "POST", body: formData });
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/voice`, { method: "POST", body: formData });
             if (!response.ok) throw new Error("Voice request failed");
             const data = await response.json();
 
@@ -194,17 +194,17 @@ export default function ChatInterface() {
 
         const lower = userMessage.toLowerCase();
         if (lower.includes("book") || lower.includes("schedule") || lower.includes("meeting") || lower.includes("tomorrow") || /\d+(am|pm)/.test(lower)) {
-            setLoadingText("Checking calendarâ€¦");
+            setLoadingText("Checking calendar\u2026");
         } else if (lower.includes("project") || lower.includes("portfolio") || lower.includes("skill")) {
-            setLoadingText("Fetching detailsâ€¦");
+            setLoadingText("Fetching details\u2026");
         } else {
-            setLoadingText("Thinkingâ€¦");
+            setLoadingText("Thinking\u2026");
         }
 
         setIsLoading(true);
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}/chat`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: userMessage, session_id: sessionId }),
