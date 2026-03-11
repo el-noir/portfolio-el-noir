@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Add custom domain
-        run: echo "mudasirshah.live" > out/CNAME
+        run: echo "mudasirshah.app" > out/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

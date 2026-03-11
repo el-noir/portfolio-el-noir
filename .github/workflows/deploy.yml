@@ -45,7 +45,7 @@ jobs:
           fi
 
       - name: Add custom domain CNAME
-        run: echo "mudasirshah.live" > ./out/CNAME
+        run: echo "mudasirshah.app" > ./out/CNAME
 
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
@@ -56,4 +56,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
-          cname: mudasirshah.live
+          cname: mudasirshah.app
