@@ -154,7 +154,7 @@ export default function ChatInterface() {
         setLoadingText("Transcribingâ€¦");
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/voice`, { method: "POST", body: formData });
+            const response = await fetch("/api/voice", { method: "POST", body: formData });
             if (!response.ok) throw new Error("Voice request failed");
             const data = await response.json();
 
@@ -204,7 +204,7 @@ export default function ChatInterface() {
         setIsLoading(true);
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/chat`, {
+            const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: userMessage, session_id: sessionId }),
