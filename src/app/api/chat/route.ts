@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 30; // seconds — gives Railway time to respond
-
 const BACKEND_URL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(req: NextRequest) {
@@ -35,7 +33,7 @@ export async function POST(req: NextRequest) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(25_000),
+            signal: AbortSignal.timeout(9_000),
         });
     } catch (err: any) {
         console.error(`[proxy/chat] fetch threw after ${Date.now() - t0}ms:`, err?.message);
