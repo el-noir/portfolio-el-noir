@@ -46,79 +46,65 @@ export default function SkillsJourney() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-background text-foreground selection:bg-accent/30 selection:text-white">
       <Navbar />
 
-      <section className="pt-32 sm:pt-40 pb-20 sm:pb-32 px-4 sm:px-6">
+      <section className="pt-32 sm:pt-40 pb-20 sm:pb-32 px-4 sm:px-6 border-b border-white/5">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-24 sm:mb-32 animate-fade-in-up">
-            <p className="text-sm uppercase tracking-widest opacity-60 mb-8">Evolution</p>
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tight leading-none mb-6">
-              Skill Development <br className="hidden md:block" /> Journey
+          <div className="mb-24 sm:mb-32">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-accent mb-8">&gt; _Evolution</p>
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-8 text-heading">
+              Technical <br className="hidden md:block" /> Evolution
             </h1>
-            <p className="text-lg sm:text-xl opacity-80 max-w-2xl leading-relaxed">
-              From backend foundations to AI-powered applications.
+            <p className="text-lg sm:text-xl text-foreground/60 font-light max-w-2xl leading-relaxed">
+              From low-level backend foundations to sophisticated AI-native architectures.
             </p>
           </div>
 
           <div className="relative max-w-4xl mx-auto">
-            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-black/10" />
+            {/* Timeline Line */}
+            <div className="absolute left-[23px] md:left-1/2 transform md:-translate-x-1/2 h-full w-px bg-white/5" />
 
-            <div className="md:hidden absolute left-6 top-0 bottom-0 w-px bg-black/10" />
-
-            <div className="space-y-16 sm:space-y-24 md:space-y-32">
+            <div className="space-y-24">
               {timeline.map((item, index) => (
                 <div key={index} className="relative">
-                  <div className="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 -translate-y-1/2 top-6 sm:top-8">
-                    <div className={`w-12 h-12 flex items-center justify-center text-lg font-bold tracking-tighter ${item.isCurrent
-                        ? 'bg-black text-white'
-                        : 'bg-white text-black border border-black/10'
+                  {/* Date Bubble */}
+                  <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 top-0 z-10">
+                    <div className={`w-12 h-12 flex items-center justify-center font-mono text-[10px] font-bold tracking-widest border ${item.isCurrent
+                      ? 'bg-accent text-background border-accent'
+                      : 'bg-[#030406] text-foreground/40 border-white/10'
                       }`}>
                       {item.date}
                     </div>
                   </div>
 
-                  <div className={`md:flex ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
-                    <div className={`w-full md:w-5/12 pl-20 sm:pl-24 md:pl-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                      <div className={`border transition-all duration-300 ${item.isCurrent ? 'border-black' : 'border-black/10 hover:border-black/30'
+                  <div className={`flex flex-col md:flex-row ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
+                    <div className={`w-full md:w-5/12 pt-16 md:pt-0 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+                      <div className={`p-8 border rounded-none transition-all duration-500 ${item.isCurrent
+                        ? 'border-accent/30 bg-white/[0.01]'
+                        : 'border-white/5 bg-[#030406] hover:border-white/10'
                         }`}>
-                        <div className={`px-6 sm:px-8 py-6 ${item.isCurrent
-                            ? 'bg-black text-white'
-                            : 'bg-white'
-                          }`}>
-                          <div className="flex items-center justify-between mb-4">
-                            <span className={`text-xs font-bold uppercase tracking-widest ${item.isCurrent ? 'text-white/60' : 'text-black/40'
-                              }`}>
-                              {item.period}
-                            </span>
-                            {item.isCurrent && (
-                              <span className="px-3 py-1 bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                                Current
-                              </span>
-                            )}
-                          </div>
-                          <h3 className={`text-xl sm:text-2xl font-bold leading-tight mb-4 ${item.isCurrent ? 'text-white' : 'text-black'
-                            }`}>
-                            {item.title}
-                          </h3>
-                          <p className={`text-sm sm:text-base leading-relaxed mb-6 ${item.isCurrent ? 'text-white/80' : 'text-black/60'
-                            }`}>
-                            {item.description}
-                          </p>
+                        <div className="flex items-center justify-between mb-6">
+                          <span className="font-mono text-[9px] uppercase tracking-widest text-accent">
+                            {item.period}
+                          </span>
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-medium tracking-tight leading-tight mb-4 text-heading">
+                          {item.title}
+                        </h3>
+                        <p className="text-sm font-light leading-relaxed mb-8 text-foreground/60">
+                          {item.description}
+                        </p>
 
-                          <div className="flex flex-wrap gap-2">
-                            {item.skills.map((skill, i) => (
-                              <span
-                                key={i}
-                                className={`px-3 py-1 text-xs font-bold uppercase tracking-widest ${item.isCurrent
-                                    ? 'bg-white/10 text-white border border-white/20'
-                                    : 'bg-black/5 text-black border border-black/10'
-                                  }`}
-                              >
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
+                        <div className="flex flex-wrap gap-2">
+                          {item.skills.map((skill, i) => (
+                            <span
+                              key={i}
+                              className="px-2 py-1 text-[9px] font-mono tracking-widest text-foreground/40 border border-white/5"
+                            >
+                              {skill}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -128,17 +114,22 @@ export default function SkillsJourney() {
             </div>
           </div>
 
-          <div className="mt-16 sm:mt-24 md:mt-32 text-center animate-fade-in-up">
+          <div className="mt-24 sm:mt-32 text-center">
             <Link
               href="/"
-              className="inline-flex items-center gap-4 px-8 sm:px-12 py-4 bg-black text-white text-sm tracking-widest uppercase transition-all duration-300 hover:bg-gray-800"
+              className="px-12 py-4 bg-transparent border border-white/10 text-heading font-mono text-xs tracking-widest uppercase hover:bg-white/5 transition-all rounded-none"
             >
-              <span className="text-lg leading-none">&larr;</span>
-              Back to Home
+              Return_To_Base
             </Link>
           </div>
         </div>
       </section>
+
+      <footer className="py-12 text-center">
+        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-foreground/20">
+          &copy; 2025 EL_NOIR_SYSTEM
+        </p>
+      </footer>
     </div>
   );
 }

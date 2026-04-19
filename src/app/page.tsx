@@ -2,297 +2,203 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import ChatInterface from "../components/Chat/ChatInterface";
 import Navbar from "../components/common/Navbar";
 
 export default function Home() {
-  const [showModal, setShowModal] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisitedBefore');
-
-    if (!hasVisited) {
-      const timer = setTimeout(() => {
-        setShowModal(true);
-        setIsVisible(true);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  const closeModal = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      setShowModal(false);
-      localStorage.setItem('hasVisitedBefore', 'true');
-    }, 300);
-  };
-
   return (
-    <>
-      <style dangerouslySetInnerHTML={{
-        __html: `
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInLeft {
-          from { opacity: 0; transform: translateX(-30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeInRight {
-          from { opacity: 0; transform: translateX(30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes scaleIn {
-          from { opacity: 0; transform: scale(0.9); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes shimmer {
-          0% { background-position: -1000px 0; }
-          100% { background-position: 1000px 0; }
-        }
-        
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
+    <main className="min-h-screen bg-background selection:bg-accent/30 selection:text-white">
+      <Navbar />
 
-        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
-        .animate-fade-in-left { animation: fadeInLeft 0.8s ease-out forwards; }
-        .animate-fade-in-right { animation: fadeInRight 0.8s ease-out forwards; }
-        .animate-scale-in { animation: scaleIn 0.6s ease-out forwards; }
-        .animate-slide-down { animation: slideDown 0.5s ease-out forwards; }
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        .delay-100 { animation-delay: 0.1s; opacity: 0; }
-        .delay-200 { animation-delay: 0.2s; opacity: 0; }
-        .delay-300 { animation-delay: 0.3s; opacity: 0; }
-        .delay-400 { animation-delay: 0.4s; opacity: 0; }
-        .delay-500 { animation-delay: 0.5s; opacity: 0; }
-        .delay-600 { animation-delay: 0.6s; opacity: 0; }
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-      `}} />
-
-      {showModal && (
-        <div
-          className={`fixed inset-0 z-[100] flex items-center justify-center px-4 transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'
-            }`}
-          onClick={closeModal}
-        >
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-          <div
-            className={`relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 transform transition-all duration-500 ${isVisible ? 'scale-100 translate-y-0' : 'scale-90 translate-y-4'
-              }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="text-center space-y-6">
-              <div className="animate-bounce">
-
-              </div>
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-                  Want to see my skill journey?
-                </h2>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  Explore my technical evolution from backend foundations to AI-powered applications
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Link
-                  href="/skills"
-                  onClick={() => localStorage.setItem('hasVisitedBefore', 'true')}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-black to-gray-800 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-semibold"
-                >
-                  Yes, Show Me! ✨
-                </Link>
-                <button
-                  onClick={closeModal}
-                  className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-300 font-semibold"
-                >
-                  Maybe Later
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="min-h-screen bg-white text-black">
-        {/* Navigation */}
-        <Navbar />
-
-        {/* Hero Section */}
-        <section className="min-h-screen flex items-center justify-center px-6 pt-20">
-          <div className="max-w-4xl w-full">
-            <div className="space-y-6">
-              <div className="flex justify-center mb-8 animate-scale-in">
-                <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 hover-lift">
-                  <Image
-                    src="/"
-                    alt="Mudasir Shah"
-                    fill
-                    className="rounded-full object-cover border-4 border-black"
-                    priority
-                  />
-                </div>
-              </div>
-              <div className="space-y-2 animate-fade-in-up delay-100">
-                <p className="text-sm uppercase tracking-widest opacity-60">Software Engineer & AI Solutions Expert</p>
-                <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
-                  I Build Systems That <br className="hidden md:block" /> Scale Your Business
-                </h2>
-              </div>
-              <h1 className="text-lg sm:text-xl md:text-2xl max-w-3xl opacity-80 leading-relaxed animate-fade-in-up delay-200">
-                Hi, I'm Mudasir Shah. I turn complex problems into elegant, production-ready SaaS products and AI-powered workflows.
+      <div className="relative">
+        {/* Minimalist Hero Section */}
+        <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 overflow-hidden pt-20">
+          <div className="max-w-4xl mx-auto text-center z-10">
+            <div className="animate-fade-in-up">
+              <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent mb-6 block font-bold">
+                Deploying Intelligence
+              </span>
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold text-heading tracking-tighter leading-[0.9] mb-8">
+                Building the <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">Next Generation</span> <br />
+                of AI Platforms.
               </h1>
-              <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4 animate-fade-in-up delay-300">
-                <a
-                  href="#contact"
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-black text-white text-sm tracking-widest uppercase transition-all duration-300 hover:bg-gray-800 text-center"
+              <p className="text-lg sm:text-xl text-foreground font-light leading-relaxed max-w-2xl mx-auto mb-10 opacity-80">
+                Focused on architecting scalable, secure backend systems and sophisticated AI-native interfaces.
+                Based in Riyadh, Engineering globally.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link
+                  href="/#services"
+                  className="px-8 py-3 bg-white text-background font-mono text-xs tracking-widest uppercase transition-all duration-300 hover:bg-white/90 rounded-none border border-white"
                 >
-                  Discuss Project
-                </a>
-                <a
-                  href="https://github.com/el-noir"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 border border-black/20 hover:border-black transition-all duration-300 text-sm tracking-widest uppercase text-center"
+                  View Systems
+                </Link>
+                <Link
+                  href="/#contact"
+                  className="px-8 py-3 bg-transparent text-heading font-mono text-xs tracking-widest uppercase transition-all duration-300 hover:bg-white/5 border border-white/10 rounded-none"
                 >
-                  View Work
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/mudasir-shah43"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 sm:px-8 py-3 border border-black/20 hover:border-black transition-all duration-300 text-sm tracking-widest uppercase text-center"
-                >
-                  LinkedIn
-                </a>
+                  Connect
+                </Link>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* Services Section */}
-        <section id="services" className="py-20 sm:py-28 px-4 sm:px-6 border-t border-black/10">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-sm uppercase tracking-widest opacity-60 mb-12 sm:mb-16 animate-fade-in-up">Expertise & Focus</h2>
-            <div className="flex flex-col gap-12 sm:gap-16 w-full">
-              {/* Service 1 */}
-              <div className="grid md:grid-cols-12 gap-6 md:gap-12 animate-fade-in-up delay-100 group">
-                <div className="md:col-span-2 text-2xl font-light opacity-30 group-hover:opacity-100 transition-opacity">01/</div>
-                <div className="md:col-span-4">
-                  <h3 className="text-2xl sm:text-3xl font-bold">Custom SaaS<br className="hidden md:block" />Development</h3>
-                </div>
-                <div className="md:col-span-6">
-                  <p className="opacity-80 leading-relaxed text-base sm:text-lg max-w-2xl">
-                    End-to-end product development. I engineer scalable, highly performant web applications from the ground up utilizing enterprise-grade architectures in Next.js and NestJS.
-                  </p>
-                </div>
-              </div>
-              <div className="w-full h-px bg-black/10 animate-fade-in-up delay-150"></div>
-
-              {/* Service 2 */}
-              <div className="grid md:grid-cols-12 gap-6 md:gap-12 animate-fade-in-up delay-200 group">
-                <div className="md:col-span-2 text-2xl font-light opacity-30 group-hover:opacity-100 transition-opacity">02/</div>
-                <div className="md:col-span-4">
-                  <h3 className="text-2xl sm:text-3xl font-bold">AI & Automation<br className="hidden md:block" />Systems</h3>
-                </div>
-                <div className="md:col-span-6">
-                  <p className="opacity-80 leading-relaxed text-base sm:text-lg max-w-2xl">
-                    Seamless integration of state-of-the-art LLMs, autonomous agent workflows, and deterministic automation to reduce operational friction and drive business intelligence.
-                  </p>
-                </div>
-              </div>
-              <div className="w-full h-px bg-black/10 animate-fade-in-up delay-250"></div>
-
-              {/* Service 3 */}
-              <div className="grid md:grid-cols-12 gap-6 md:gap-12 animate-fade-in-up delay-300 group">
-                <div className="md:col-span-2 text-2xl font-light opacity-30 group-hover:opacity-100 transition-opacity">03/</div>
-                <div className="md:col-span-4">
-                  <h3 className="text-2xl sm:text-3xl font-bold">Enterprise<br className="hidden md:block" />Architecture</h3>
-                </div>
-                <div className="md:col-span-6">
-                  <p className="opacity-80 leading-relaxed text-base sm:text-lg max-w-2xl">
-                    Secure, scalable backend infrastructure and robust API design. Architected to accommodate high concurrency while protecting sensitive payloads with zero compromise on speed.
-                  </p>
-                </div>
-              </div>
-            </div>
+          {/* Subtle bottom indicator */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+            <span className="font-mono text-[9px] uppercase tracking-widest text-foreground/40">Scroll_Module</span>
+            <div className="w-px h-12 bg-white/10"></div>
           </div>
         </section>
 
-        {/* About Section */}
-        <section id="about" className="py-20 sm:py-28 px-4 sm:px-6 border-t border-black/10">
+        {/* Services / Expertise - Sharp Minimalist Bento */}
+        <section id="services" className="py-24 sm:py-32 px-4 sm:px-6 relative border-t border-white/5">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-sm uppercase tracking-widest opacity-60 mb-12 sm:mb-16 animate-fade-in-up">About Me</h2>
-            <div className="grid md:grid-cols-12 gap-12 sm:gap-16">
-              <div className="md:col-span-8 space-y-6 sm:space-y-8 animate-fade-in-up delay-100">
-                <p className="text-xl sm:text-2xl font-light leading-relaxed">
-                  I specialize in API design, functional database architecture, and secure, maintainable code. My foundation in backend development organically evolved into orchestrating complete, sophisticated SaaS platforms and novel AI integrations using LangChain and LangGraph.
-                </p>
-                <div className="w-16 h-px bg-black/40"></div>
-                <p className="text-base sm:text-lg opacity-80 leading-relaxed max-w-3xl">
-                  Having competed in cutting-edge environments like BlackHat MEA, I approach engineering with a security-first mindset. From the first line of code to global deployment, every layer is built to withstand scrutiny while delivering an uncompromised user experience.
-                </p>
+            <div className="mb-16 sm:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <h2 className="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">&gt; _Engineering_Stack</h2>
+                <h3 className="text-4xl sm:text-5xl font-medium text-heading tracking-tight leading-none">
+                  Architecting resilient <br /> digital infrastructure.
+                </h3>
               </div>
-              <div className="md:col-span-4 space-y-12 animate-fade-in-up delay-200">
-                <div className="space-y-3">
-                  <h4 className="text-xs uppercase tracking-widest opacity-60">Pillar I</h4>
-                  <h5 className="font-bold text-lg">Rapid Iteration</h5>
-                  <p className="text-sm opacity-80 leading-relaxed">Swift conceptualization to production MVP, prioritizing core business mechanics.</p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-xs uppercase tracking-widest opacity-60">Pillar II</h4>
-                  <h5 className="font-bold text-lg">Security First</h5>
-                  <p className="text-sm opacity-80 leading-relaxed">Architecting defenses into the data layer before deploying to the edge.</p>
-                </div>
-                <div className="space-y-3">
-                  <h4 className="text-xs uppercase tracking-widest opacity-60">Pillar III</h4>
-                  <h5 className="font-bold text-lg">Clean Architecture</h5>
-                  <p className="text-sm opacity-80 leading-relaxed">Modular, decoupled codebases built for future scaling and team extension.</p>
-                </div>
-              </div>
+              <p className="text-sm font-light text-foreground/60 max-w-xs leading-relaxed uppercase tracking-wider font-mono">
+                [ Protocol 01 ] <br />
+                End-to-end sovereignty <br />
+                from data to edge.
+              </p>
             </div>
-          </div>
-        </section>
 
-        {/* Experience Section */}
-        <section id="experience" className="py-20 sm:py-28 px-4 sm:px-6 border-t border-black/10">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-sm uppercase tracking-widest opacity-60 mb-12 sm:mb-16 animate-fade-in-up">Experience</h2>
-            <div className="space-y-16">
-              <div className="grid md:grid-cols-12 gap-6 md:gap-12 animate-fade-in-up delay-100">
-                <div className="md:col-span-3">
-                  <p className="text-xs sm:text-sm uppercase tracking-widest opacity-60">Oct 2024 - Present</p>
-                </div>
-                <div className="md:col-span-9 space-y-4">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl font-bold">Web Developer</h3>
-                    <p className="text-base sm:text-lg opacity-80 mb-6">Out-Secure</p>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-[1px] bg-white/5 border border-white/5">
+              {/* Service 1: AI & LLM Systems */}
+              <div className="md:col-span-8 bg-background p-8 sm:p-12 hover:bg-white/[0.02] transition-colors duration-500 group">
+                <div className="flex flex-col h-full justify-between">
+                  <div className="mb-12">
+                    <span className="font-mono text-[10px] text-accent font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">01 . System_Intelligence</span>
+                    <h4 className="text-3xl font-medium text-heading mt-6 mb-4 group-hover:text-accent transition-colors">AI & LLM Orchestration</h4>
+                    <p className="text-lg text-foreground font-light leading-relaxed max-w-xl">
+                      Developing custom LangChain and LangGraph workflows. Building specialized agents with complex RAG implementation and long-term memory architectures.
+                    </p>
                   </div>
-                  <ul className="space-y-4 opacity-80 text-sm sm:text-base leading-relaxed max-w-3xl border-l border-black/20 pl-6">
-                    <li>Architected SaaS applications using Next.js and NestJS.</li>
-                    <li>Designed scalable REST APIs and database architectures handling high-volume traffic.</li>
-                    <li>Implemented secure authentication, authorization, and data protection mechanisms.</li>
-                    <li>Optimized application performance and database queries for enterprise-grade solutions.</li>
+                  <div className="flex gap-3 flex-wrap">
+                    {["LangChain", "OpenAI", "Vector DB", "RAG"].map((tag) => (
+                      <span key={tag} className="px-3 py-1 border border-white/5 font-mono text-[9px] uppercase tracking-widest text-foreground/40">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Service 2: Backend Architecture */}
+              <div className="md:col-span-4 bg-background p-8 sm:p-12 hover:bg-white/[0.02] transition-colors duration-500 group">
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    <span className="font-mono text-[10px] text-accent font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">02 . Core_Infrastructure</span>
+                    <h4 className="text-2xl font-medium text-heading mt-6 mb-4">Scalable Backend Engineering</h4>
+                    <p className="text-sm text-foreground/60 font-light leading-relaxed">
+                      Microservices, RESTful & GraphQL API design, and functional database schemas built with NestJS and Node.js.
+                    </p>
+                  </div>
+                  <div className="mt-8 flex gap-3 flex-wrap">
+                    {["NestJS", "PostgreSQL", "Redis"].map((tag) => (
+                      <span key={tag} className="px-3 py-1 border border-white/5 font-mono text-[9px] uppercase tracking-widest text-foreground/40">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Service 3: Security */}
+              <div className="md:col-span-4 bg-background p-8 sm:p-12 hover:bg-white/[0.02] transition-colors duration-500 group">
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    <span className="font-mono text-[10px] text-accent font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">03 . Defense_Protocol</span>
+                    <h4 className="text-2xl font-medium text-heading mt-6 mb-4">Security-First Development</h4>
+                    <p className="text-sm text-foreground/60 font-light leading-relaxed">
+                      Drawing from BlackHat competition experience to build production-ready applications protected against specialized threats.
+                    </p>
+                  </div>
+                  <div className="mt-8 flex gap-3 flex-wrap">
+                    {["AuthZ", "JWT", "Pentesting"].map((tag) => (
+                      <span key={tag} className="px-3 py-1 border border-white/5 font-mono text-[9px] uppercase tracking-widest text-foreground/40">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Service 4: Full-Stack SaaS */}
+              <div className="md:col-span-8 bg-background p-8 sm:p-12 hover:bg-white/[0.02] transition-colors duration-500 group">
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    <span className="font-mono text-[10px] text-accent font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity">04 . Surface_Logic</span>
+                    <h4 className="text-3xl font-medium text-heading mt-6 mb-4">Next.js SaaS Platforms</h4>
+                    <p className="text-lg text-foreground font-light leading-relaxed max-w-xl">
+                      Crafting high-speed, SEO-optimized dashboards and data platforms that provide seamless user experiences across all devices.
+                    </p>
+                  </div>
+                  <div className="mt-8 flex gap-3 flex-wrap">
+                    {["Next.js 15", "TypeScript", "Tailwind"].map((tag) => (
+                      <span key={tag} className="px-3 py-1 border border-white/5 font-mono text-[9px] uppercase tracking-widest text-foreground/40">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section - Minimalist Precision */}
+        <section id="about" className="py-24 sm:py-32 px-4 sm:px-6 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-accent mb-12">&gt; _Identity</h2>
+            <div className="grid md:grid-cols-12 gap-12 sm:gap-24 items-start">
+              <div className="md:col-span-4 grayscale hover:grayscale-0 transition-all duration-700 aspect-square bg-white/5 border border-white/10 overflow-hidden relative group">
+                <Image
+                  src="/pfp.jpg"
+                  alt="Mudasir Shah"
+                  fill
+                  className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                />
+              </div>
+              <div className="md:col-span-8 space-y-10">
+                <p className="text-2xl sm:text-3xl font-light leading-tight text-heading tracking-tight">
+                  I architect systems where security meets speed. Based in Riyadh, I help teams build production-grade AI applications that actually scale.
+                </p>
+                <div className="w-12 h-px bg-accent"></div>
+                <div className="grid sm:grid-cols-2 gap-10">
+                  <div className="space-y-4">
+                    <h5 className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Philosophy</h5>
+                    <p className="text-sm text-foreground/80 leading-relaxed font-light">
+                      Code is meant to be read by humans and executed by machines. I prioritize maintainability and clean abstractions in every layer of the stack.
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <h5 className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Background</h5>
+                    <p className="text-sm text-foreground/80 leading-relaxed font-light">
+                      From competing in BlackHat MEA to leading community CTFs, my foundation is built on testing and breaking systems to build better ones.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Experience - Clean Vertical Timeline */}
+        <section id="experience" className="py-24 sm:py-32 px-4 sm:px-6 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-accent mb-16">&gt; _Timeline</h2>
+            <div className="space-y-[1px] bg-white/5 border border-white/5">
+              <div className="bg-background p-8 sm:p-12 flex flex-col md:flex-row gap-8 md:items-start group hover:bg-white/[0.01] transition-colors">
+                <div className="md:w-1/4">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/40">Oct 2024 - Now</span>
+                </div>
+                <div className="md:w-3/4">
+                  <h4 className="text-2xl font-medium text-heading mb-1 group-hover:text-accent transition-colors">Web Developer</h4>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-foreground/60 mb-6">@ Out-Secure</p>
+                  <ul className="grid sm:grid-cols-2 gap-4 text-sm text-foreground/60 font-light leading-relaxed">
+                    <li className="flex gap-3"><span className="text-accent shrink-0 font-mono">[+]</span>SaaS Architecture (Next.js/NestJS)</li>
+                    <li className="flex gap-3"><span className="text-accent shrink-0 font-mono">[+]</span>REST/GraphQL API Scaling</li>
+                    <li className="flex gap-3"><span className="text-accent shrink-0 font-mono">[+]</span>Security Mitigation (AuthN/AuthZ)</li>
+                    <li className="flex gap-3"><span className="text-accent shrink-0 font-mono">[+]</span>DB Optimization (Postgres/Redis)</li>
                   </ul>
                 </div>
               </div>
@@ -300,108 +206,47 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Selected Works - Projects Section is already updated, skipping replacement here */}
-
-        {/* Highlights & Engagements Section */}
-        <section id="highlights" className="py-20 sm:py-32 px-4 sm:px-6 border-t border-black/10">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-sm uppercase tracking-widest opacity-60 mb-12 sm:mb-16 animate-fade-in-up">Highlights & Engagements</h2>
-
-            <div className="space-y-16 sm:space-y-24">
-              {/* BlackHat MEA */}
-              <div className="grid md:grid-cols-12 gap-8 md:gap-12 animate-fade-in-up delay-100">
-                <div className="md:col-span-4 lg:col-span-3">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-2">BlackHat MEA</h3>
-                  <p className="text-sm uppercase tracking-widest opacity-60 mb-2">2025 &bull; Riyadh</p>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-40">CTF Competitor</p>
-                </div>
-                <div className="md:col-span-8 lg:col-span-9 space-y-6">
-                  <p className="text-lg sm:text-xl opacity-80 leading-relaxed max-w-3xl">
-                    Participated in one of the world's premier cybersecurity conferences, competing in Capture The Flag challenges that tested advanced security skills and problem-solving abilities.
-                  </p>
-                  <div className="pt-6 border-t border-black/10">
-                    <p className="text-xs uppercase tracking-widest font-bold mb-4 opacity-60">Impact</p>
-                    <ul className="space-y-3 text-sm opacity-80">
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">01/</span>Deepened understanding of secure application development for AI systems.</li>
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">02/</span>Learned advanced threat modeling techniques to prevent prompt injection.</li>
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">03/</span>Enhanced problem-solving skills for debugging complex AI workflows.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* OutSecure Community Leadership */}
-              <div className="grid md:grid-cols-12 gap-8 md:gap-12 animate-fade-in-up delay-200">
-                <div className="md:col-span-4 lg:col-span-3">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-2">Community Leadership</h3>
-                  <p className="text-sm uppercase tracking-widest opacity-60 mb-2">OutSecure</p>
-                  <p className="text-xs font-bold uppercase tracking-widest opacity-40">Event Management</p>
-                </div>
-                <div className="md:col-span-8 lg:col-span-9 space-y-6">
-                  <p className="text-lg sm:text-xl opacity-80 leading-relaxed max-w-3xl">
-                    Lead the organization and execution of cybersecurity-focused events, including competitive CTF challenges and technical workshops for aspiring security professionals.
-                  </p>
-                  <div className="pt-6 border-t border-black/10">
-                    <p className="text-xs uppercase tracking-widest font-bold mb-4 opacity-60">Impact</p>
-                    <ul className="space-y-3 text-sm opacity-80">
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">01/</span>Developed strong communication and leadership skills for team collaboration.</li>
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">02/</span>Enhanced ability to break down complex concepts while teaching workshops.</li>
-                      <li className="flex gap-4"><span className="opacity-40 font-bold">03/</span>Built a strong professional network leading to collaborative opportunities.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-16 sm:mt-24 pt-12 border-t border-black/10 text-center animate-fade-in-up">
+        {/* Contact Section - Final Direct Link */}
+        <section id="contact" className="py-32 px-4 sm:px-6 border-t border-white/5 text-center">
+          <div className="max-w-2xl mx-auto space-y-8">
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-accent">&gt; _Connection</h2>
+            <h3 className="text-5xl sm:text-6xl font-bold text-heading tracking-tighter">Ready to build.</h3>
+            <p className="text-lg text-foreground/60 font-light mb-12">
+              Open for specialized consulting, platform architecture, or AI integration projects.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href="mailto:contact@el-noir.com"
+                className="w-full sm:w-auto px-12 py-4 bg-white text-background font-mono text-xs tracking-widest uppercase hover:bg-white/90 transition-all rounded-none"
+              >
+                Send Message
+              </a>
               <Link
                 href="/highlights"
-                className="inline-flex items-center gap-4 px-8 py-4 bg-black text-white text-sm tracking-widest uppercase transition-all duration-300 hover:bg-gray-800"
+                className="w-full sm:w-auto px-12 py-4 bg-transparent text-heading border border-white/10 font-mono text-xs tracking-widest uppercase hover:bg-white/5 transition-all rounded-none"
               >
-                View Full Details
-                <span className="text-lg leading-none">&rarr;</span>
+                View Highlights
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="py-20 sm:py-32 px-4 sm:px-6 bg-black text-white">
-          <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-            <h2 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-8 animate-fade-in-up tracking-tight">Ready to Build?</h2>
-            <p className="text-lg sm:text-xl opacity-60 mb-12 max-w-2xl animate-fade-in-up delay-100 font-light">
-              Let's engineer your next digital product with precision, performance, and impact.
-            </p>
-            <a
-              href="mailto:mudasirshah9777@gmail.com"
-              className="inline-block w-full sm:w-auto px-6 sm:px-10 py-4 bg-white text-black text-sm tracking-widest uppercase transition-all duration-300 hover:bg-gray-200 hover:scale-105 animate-fade-in-up delay-200"
-            >
-              Start the Conversation
-            </a>
-          </div>
-        </section>
-
         {/* Footer */}
-        <footer className="py-12 px-4 sm:px-6 border-t border-black/10 bg-white">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-            <p className="opacity-40 text-sm tracking-widest uppercase">© 2026 Mudasir Shah.</p>
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-sm uppercase tracking-widest font-medium">
-              <a href="https://github.com/el-noir" target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
-                GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/mudasir-shah43" target="_blank" rel="noopener noreferrer" className="opacity-40 hover:opacity-100 transition-opacity">
-                LinkedIn
-              </a>
-              <a href="mailto:mudasirshah9777@gmail.com" className="opacity-40 hover:opacity-100 transition-opacity">
-                Email
-              </a>
+        <footer className="py-12 border-t border-white/5 text-center">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-foreground/30">
+              Generated by EL_NOIR_SYSTEM &copy; 2025
+            </p>
+            <div className="flex gap-8 font-mono text-[9px] uppercase tracking-widest">
+              <a href="#" className="text-foreground/40 hover:text-white transition-colors">Github</a>
+              <a href="#" className="text-foreground/40 hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="text-foreground/40 hover:text-white transition-colors">X / Twitter</a>
             </div>
           </div>
         </footer>
-
-        {/* Portfolio AI Chat */}
-        <ChatInterface />
       </div>
-    </>
+
+      <ChatInterface />
+    </main>
   );
 }

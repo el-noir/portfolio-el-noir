@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #030509;
+  --foreground: #a1a1aa;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #030406; /* Deep, matte minimalist black */
+  --color-foreground: #a1a1aa; /* Zinc-400 for softer body text */
+  --color-accent: #38bdf8; /* Precision cyan */
+  --color-heading: #f8fafc; /* Crisp, clean white */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* No background gradients per "no fancy" request */
+  }
 }
 
 * {
@@ -17,11 +30,9 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -36,26 +47,31 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #000;
+  background: #1f2937;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+  background: #374151;
 }
 
 @layer utilities {
   @keyframes ping-slow {
-    75%, 100% {
+
+    75%,
+    100% {
       transform: scale(1.6);
       opacity: 0;
     }
   }
 
   @keyframes bounce-subtle {
-    0%, 100% {
+
+    0%,
+    100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-4px);
     }
